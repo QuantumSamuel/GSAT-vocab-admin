@@ -1,0 +1,1248 @@
+/* ============================================================
+ * admin-site 樣式（由 tools/extract-admin-css.mjs 自動抽取，勿手改）
+ * 來源：6.0/6.1.2/css/style.css（學習站樣式，唯讀）
+ * 只保留後台實際使用的選擇器：token／基礎版面／按鈕／卡片／對話框／後台外殼／
+ * 使用者表格／金鑰／公告／預設單詞本／平台額度／反饋／登入卡。
+ * 重新抽取：node tools/extract-admin-css.mjs
+ * ============================================================ */
+
+/* ============================================================
+   學測英文單字 2.0 — Soft Minimal 設計語言（2.1.1 正式版）
+   token 制：淺/深 × 五強調色（藍/橘/綠/粉/灰）
+   ============================================================ */
+
+/* ---------- Tokens：淺色（4.2.0 重調：Notion 式三層 surface＋hairline 分離） ---------- */
+
+:root{
+  --bg: #FFFFFF;              /* 頁面底＝卡片同色，靠 1px 線分離（Notion） */
+  --surface: #FFFFFF;         /* surface-1 卡片 */
+  --surface-2: #F7F7F5;       /* 次要面板／hover 列 */
+  --surface-3: #EFEFEE;       /* active／pressed（4.2.0 新增第三層） */
+  --ink: #252525;
+  --muted: #787878;
+  --border: #E8E7E3;
+  --border-soft: #F0EFEC;     /* 列分隔線（比 --border 淺一階，4.2.0 新增） */
+  --shadow: none;             /* 4.2.0 hairline：卡片靠線不靠影；陰影只留浮層 */
+  --radius: 12px;             /* 卡片／Dialog（shape-md） */
+  --accent: #4A6FA5;
+  --accent-soft: #EEF2F6;
+  --good: #5A8A6A; --warn: #A8814A; --bad: #A85A4A;
+  /* 5.2 新增：第三種來源色（考古題）。不跟著強調色走——它是「題目來源」的固定色，
+     使用者換強調色時三種來源徽章的相對關係（real 藍／archive 紫／ai 綠）不能被打散 */
+  --src-archive: #7C5CBF; --src-archive-soft: #F1EDF8;
+  --font: Inter, "SF Pro Text", -apple-system, "Segoe UI",
+          "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  /* 4.2.0 spacing token（4 的倍數六階） */
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-6: 24px; --space-8: 32px;
+  /* 4.2.0 shape token（M3 shape scale 五階） */
+  --shape-xs: 4px; --shape-sm: 8px; --shape-md: 12px; --shape-lg: 16px; --shape-full: 999px;
+  /* 4.2.0 頂欄高度（抽屜側欄 sticky 計算用） */
+  --topbar-h: 52px;
+}
+
+/* ---------- Tokens：深色（4.2.0 整組重調：全值對比 ≥ WCAG AA） ---------- */
+
+html.dark{
+  --bg: #191917;
+  --surface: #202020;
+  --surface-2: #2A2A28;
+  --surface-3: #343431;
+  --ink: #ECECEA;
+  --muted: #9A9A94;
+  --border: #333331;
+  --border-soft: #2C2C2A;
+  --shadow: none;
+  /* 語意色深色覆寫（4.2.0：--good/--warn 原漏、對比 3.96/3.99 不達 AA） */
+  --good: #8FBF9F; --warn: #C9A16B; --bad: #D9825F;
+  --src-archive: #A88FD6; --src-archive-soft: #2A2438;
+}
+
+/* ---------- 強調色 × 模式（10 組合） ---------- */
+
+html[data-accent="blue"]{ --accent: #4A6FA5; --accent-soft: #EEF2F6; }
+
+html[data-accent="orange"]{ --accent: #B8722F; --accent-soft: #F6EEE4; }
+
+html[data-accent="green"]{ --accent: #5A8A6A; --accent-soft: #EDF3EF; }
+
+html[data-accent="pink"]{ --accent: #B06E85; --accent-soft: #F7EDF1; }
+
+html[data-accent="gray"]{ --accent: #6B6F76; --accent-soft: #F0F0EE; }
+
+html.dark[data-accent="blue"]{ --accent: #7FA3C9; --accent-soft: #26303B; }
+
+html.dark[data-accent="orange"]{ --accent: #D49A5E; --accent-soft: #33291D; }
+
+html.dark[data-accent="green"]{ --accent: #7FA98C; --accent-soft: #22302A; }
+
+html.dark[data-accent="pink"]{ --accent: #C996AB; --accent-soft: #33242B; }
+
+html.dark[data-accent="gray"]{ --accent: #9A9AA0; --accent-soft: #2B2B2E; }
+
+/* ---------- 基礎 ---------- */
+
+*{ box-sizing: border-box; }
+
+body{
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--font); font-size: 15.5px; line-height: 1.65;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+h2{ font-size: 1.02rem; font-weight: 600; margin: 0 0 12px; }
+
+h3{ font-size: 0.92rem; font-weight: 600; margin: 14px 0 8px; }
+
+.muted{ color: var(--muted); }
+
+.small{ font-size: 0.85rem; }
+
+a{ color: var(--accent); }
+
+#page{ max-width: 640px; margin: 0 auto; padding: calc(10px + env(safe-area-inset-top, 0px)) 16px calc(24px + env(safe-area-inset-bottom, 0px)); }
+
+main{ padding: 0 0 24px; }
+
+footer{
+  text-align: center; color: var(--muted); font-size: 0.78rem;
+  padding: 18px 12px 22px;
+}
+
+/* ---------- 卡片 ---------- */
+
+.card{
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow);
+  margin-bottom: 12px;
+}
+
+.card.error{ border-color: color-mix(in srgb, var(--bad) 45%, var(--border)); }
+
+/* ---------- 按鈕 ---------- */
+
+.btn{
+  display: inline-block; background: var(--surface); color: var(--ink);
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 8px 14px; font-size: 0.88rem; font-family: inherit;
+  cursor: pointer; text-decoration: none; text-align: center;
+  transition: background 0.16s ease, border-color 0.16s ease, transform 0.1s ease;
+}
+
+.btn:hover{ background: var(--surface-2); }
+
+.btn.primary{ background: var(--accent); border-color: var(--accent); color: #fff; }
+
+.btn.primary:hover{ opacity: 0.92; }
+
+.btn.subtle{ background: transparent; border-color: transparent; color: var(--muted); }
+
+.btn.subtle:hover{ color: var(--ink); background: var(--surface-2); }
+
+.btn.marked{ background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+
+.btn:disabled{ opacity: 0.5; cursor: default; }
+
+/* ---------- ☰ 目錄 ---------- */
+
+.chrome-bar{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 0 10px;
+  position: relative;
+  z-index: 100; /* 高於遮罩，展開選單時可點 */
+}
+
+#user-fab{
+  width: 42px; height: 42px; border-radius: 10px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--ink); font-size: 1.15rem; cursor: pointer;
+  box-shadow: var(--shadow); transition: background 0.16s ease;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+
+#user-fab:hover{ background: var(--surface-2); }
+
+#menu-fab svg{ width: 19px; height: 19px; }
+
+#user-fab svg{ width: 19px; height: 19px; }
+
+/* 3.3.1 修復：ID 選擇器的 display 蓋過 .hidden → 需更高特異性才能隱藏 */
+
+#user-fab.hidden{ display: none; }
+
+.menu-wrap{ position: relative; }
+
+.left-cluster{ display: flex; gap: 8px; align-items: center; }
+
+.user-menu{
+  display: none;
+  position: absolute; top: 48px; right: 0; min-width: 220px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  overflow: hidden; z-index: 100;
+}
+
+.user-menu.open{ display: block; }
+
+.user-menu a, .user-menu button{
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  padding: 11px 16px; color: var(--ink); text-decoration: none; font-size: 0.95rem;
+  border: none; border-bottom: 1px solid var(--border); background: var(--surface);
+  transition: background 0.16s ease; cursor: pointer; font-family: inherit; text-align: left;
+}
+
+.user-menu a:last-child, .user-menu button:last-child{ border-bottom: none; }
+
+.user-menu a:hover, .user-menu button:hover{ background: var(--accent-soft); color: var(--accent); }
+
+.user-menu svg{ width: 17px; height: 17px; color: var(--muted); flex: none; }
+
+.um-email{
+  padding: 10px 16px; font-size: 0.85rem; color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+.um-email{ color: var(--accent); font-weight: 600; }
+
+.menu .drawer-head button{
+  width: 32px; height: 32px; border: none; background: transparent; color: var(--muted);
+  border-radius: var(--shape-sm, 8px); cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+}
+
+.menu .drawer-head button:hover{ background: var(--surface-3); color: var(--ink); }
+
+.menu .drawer-head svg{ width: 17px; height: 17px; }
+
+.menu a{
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 10px; color: var(--ink); text-decoration: none; font-size: 0.95rem;
+  border-radius: var(--shape-sm, 8px); transition: background 0.16s ease;
+}
+
+.menu a:hover{ background: var(--surface-3); }
+
+.menu a.active{ background: var(--surface); box-shadow: inset 3px 0 0 var(--accent); font-weight: 600; }
+
+.menu a svg{ width: 17px; height: 17px; color: var(--muted); flex: none; }
+
+.menu a.active svg{ color: var(--accent); }
+
+/* ---------- 每日任務 ---------- */
+
+.srs-summary{ display: flex; gap: 12px; margin-bottom: 14px; }
+
+.srs-box{
+  flex: 1; background: var(--surface-2); border-radius: 10px;
+  text-align: center; padding: 16px 12px; border: none; font-family: inherit; color: inherit;
+}
+
+.srs-box .num{ font-size: 1.75rem; font-weight: 700; }
+
+.srs-box .label{ font-size: 0.85rem; color: var(--muted); }
+
+.srs-box.due .num{ color: var(--accent); }
+
+.sched-row input[type="date"]{
+  border: 1px solid var(--border); border-radius: 6px; padding: 3px 5px;
+  font-family: inherit; font-size: 0.85rem; background: var(--surface); color: var(--ink);
+}
+
+.sched-row .btn{ padding: 3px 8px; font-size: 0.85rem; }
+
+.cal-head strong{ font-size: 0.92rem; font-weight: 600; }
+
+.controls{ display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin: 10px 0; }
+
+/* ---------- 查詢頁 ---------- */
+
+.search-row{ display: flex; gap: 8px; margin: 8px 0; }
+
+.search-row input, textarea#tr-input{
+  flex: 1; min-width: 0; padding: 9px 12px;
+  border: 1px solid var(--border); border-radius: 8px;
+  font-size: 0.95rem; font-family: inherit; background: var(--surface); color: var(--ink);
+  transition: border-color 0.16s ease;
+}
+
+.search-row input:focus, textarea#tr-input:focus{ outline: none; border-color: var(--accent); }
+
+textarea#tr-input{ resize: vertical; width: 100%; }
+
+.tense-table table{ width: auto; margin: 4px 0; }
+
+.tense-table th{ background: transparent; color: var(--muted); font-weight: 500; }
+
+.stat-bar{ flex: 1; height: 6px; background: var(--surface-2); border-radius: 3px; overflow: hidden; }
+
+.stat-bar span{ display: block; height: 100%; border-radius: 3px; background: var(--accent); opacity: 0.8; }
+
+/* ---------- 表格 ---------- */
+
+.table-scroll{ overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+.table-scroll td, .table-scroll th{ white-space: nowrap; }
+
+.table-scroll td.td-word{ white-space: normal; min-width: 90px; }
+
+table{ width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+
+th{
+  text-align: left; color: var(--muted); font-weight: 500; font-size: 0.8rem;
+  padding: 6px 8px; border-bottom: 1px solid var(--border);
+}
+
+td{ padding: 9px 8px; border-bottom: 1px solid var(--border); }
+
+tr:hover td{ background: var(--surface-2); }
+
+.warning{ color: var(--warn); min-height: 1.4em; margin: 4px 0; font-size: 0.92rem; }
+
+.hidden{ display: none; }
+
+.menu a.hidden{ display: none; }
+
+/* 3.1.1：後台入口僅管理員可見（.menu a 的 display:flex 蓋過 .hidden 的修復） */
+
+.error{ border-color: color-mix(in srgb, var(--bad) 45%, var(--border)); }
+
+/* 5.1.6：介紹頁「開發路線圖」區段已移除（內容併入 更新日志.txt 的未來更新計劃），
+   .roadmap 這條規則跟著刪除，不留死碼。若日後路線圖回到介紹頁再一起加回。 */
+
+/* ---------- 字體大小 ---------- */
+
+/* 4.2.0：只影響內容區 #page，不再縮放全站 token 階梯 */
+
+html.font-s #page{ font-size: 14px; }
+
+html.font-m #page{ font-size: 15.5px; }
+
+html.font-l #page{ font-size: 18.5px; }
+
+/* ---------- 響應式 ---------- */
+
+@media (max-width: 480px){main{ padding: 10px 12px 20px; }
+
+.card{ padding: 15px; }}
+
+.mode-icon svg{ width: 26px; height: 26px; }
+
+#back-fab svg{ width: 18px; height: 18px; }
+
+#top-label{
+  flex: 1;
+  text-align: center;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 0.06em;
+}
+
+.scope-actions .btn{ padding: 4px 10px; font-size: 0.8rem; }
+
+.count-row input[type="number"]{
+  width: 76px;
+  padding: 7px 9px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.count-row input[type="range"]{ flex: 1; accent-color: var(--accent); }
+
+.range-row input[type="range"]{ width: 100%; accent-color: var(--accent); }
+
+#grade-controls .btn{ min-width: 88px; }
+
+#grade-controls .btn.primary small{ color: rgba(255, 255, 255, 0.82); }
+
+#grade-controls .btn:disabled{ cursor: wait; }
+
+@media (min-width: 900px){/* 內容拓寬：左右各留 1/6（內容 2/3） */
+
+#page{ max-width: 66.7vw; }}
+
+/* 極寬螢幕（≥1600px）內容再放寬上限，避免過長行 */
+
+@media (min-width: 1600px){#page{ max-width: 1200px; }}
+
+.task-head h2{ margin: 0; }
+
+.mgmt-row input[type="date"]{
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 6px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.mgmt-row .btn{ padding: 4px 8px; font-size: 0.85rem; }
+
+.speak-btn svg{ width: 17px; height: 17px; }
+
+/* ---------- 練習模式選擇：非寬屏（視窗窄於 900px）改橫條式由上而下（圖示左、文字右） ----------
+   5.1.8（用戶指示「只放寬寬度條件、不看比例」）：這條原本是
+   `not all and (min-width: 900px) and (min-aspect-ratio: 5/4)`，與正選那條互斥。
+   全案把 aspect-ratio 拿掉後，正選變成單一的 `(min-width: 900px)`，這條也跟著收斂成
+   `not all and (min-width: 900px)`——兩條仍然互斥（900px 整數邊界只有一邊成立），
+   寬度達標的視窗（1100x900 之類窄而高者）只命中正選，並排卡片生效、不再被這條蓋掉。
+   寫法刻意用 `not all and (min-width: 900px)`
+   而不是 spec 原文的 `not all and ((min-width: 900px and (…)))`：
+   括號內只能放單一 media feature，`(min-width: 900px and (…))` 不是合法 media-in-parens，
+   嚴格解析器會整條丟棄（jsdom cssstyle 的實測結果就是條件被截成 `not all`）。
+   現在這兩條與正選那條互斥且皆合法。 */
+
+@media not all and (min-width: 900px){.chooser-card .mode-icon svg{ width: 30px; height: 30px; }}
+
+/* ---------- 動畫引擎（3.0.5）：三款可選，html[data-anim] 控制 ----------
+   flip（預設）＝切頁左右推進＋卡片 3D 翻面＋按鈕深壓
+   soft        ＝切頁淡入上移＋卡片交叉淡換＋按壓微縮
+   spring      ＝切頁彈簧浮現＋卡片彈一下＋按鈕 hover 放大
+   全部只用 transform/opacity；prefers-reduced-motion 時自動停用 */
+
+/* --- 切頁 --- */
+
+html:not([data-anim="spring"]) .page-fwd > *{ animation: pageSlideFwd .28s ease-out; }
+
+html:not([data-anim="spring"]) .page-back > *{ animation: pageSlideBack .28s ease-out; }
+
+html[data-anim="soft"] .page-fwd > *{ animation: pageFadeUp .22s ease-out; }
+
+html[data-anim="soft"] .page-back > *{ animation: pageFadeUp .22s ease-out; }
+
+html[data-anim="spring"] .page-fwd > *, html[data-anim="spring"] .page-back > *{ animation: pageSpring .3s cubic-bezier(.34, 1.56, .64, 1); }
+
+/* --- 按鈕回饋 --- */
+
+html:not([data-anim="spring"]) .btn:active{ transform: translateY(1px) scale(.98); box-shadow: inset 0 2px 5px rgba(0,0,0,.10); }
+
+html[data-anim="spring"] .btn{ transition: transform .14s cubic-bezier(.34, 1.8, .64, 1), background .16s ease; }
+
+html[data-anim="spring"] .btn:hover{ transform: scale(1.04); }
+
+html[data-anim="spring"] .btn:active{ transform: scale(.94); }
+
+html[data-anim="soft"] .btn:active{ transform: scale(.97); box-shadow: none; }
+
+@media (prefers-reduced-motion: reduce){*, *::before, *::after{
+    animation-duration: .01ms !important; transition-duration: .01ms !important;
+  }}
+
+.grp-actions .btn{ padding: 2px 8px; font-size: 0.8rem; }
+
+.wb-controls label{
+  font-size: 0.82rem; color: var(--muted); display: flex; align-items: center; gap: 5px;
+}
+
+.import-panel{
+  background: var(--surface-2); border-radius: 8px;
+  padding: 12px 14px; margin-bottom: 10px;
+}
+
+.import-panel textarea{
+  width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px;
+  font-family: inherit; font-size: 0.95rem; background: var(--surface); color: var(--ink);
+  resize: vertical;
+}
+
+.import-row{ display: flex; gap: 12px; flex-wrap: wrap; margin: 8px 0; }
+
+.import-row label{
+  font-size: 0.82rem; color: var(--muted);
+  display: flex; flex-direction: column; gap: 4px;
+}
+
+.import-row select, .import-row input{
+  border: 1px solid var(--border); border-radius: 6px; padding: 5px 8px;
+  background: var(--surface); color: var(--ink); font-family: inherit; font-size: 0.88rem;
+}
+
+.import-bad{ color: var(--warn); }
+
+.dg-adjust-ui input[type="date"]{
+  border: 1px solid var(--border); border-radius: 6px; padding: 4px 6px;
+  font-family: inherit; font-size: 0.85rem; background: var(--surface); color: var(--ink);
+}
+
+#sync-dialog .btn{ padding: 5px 12px; font-size: 0.85rem; }
+
+/* ============================================================
+   3.2.0 登入／註冊頁（全新界面）
+   ============================================================ */
+
+.auth-wrap{
+  min-height: calc(100vh - 140px);
+  display: flex; align-items: center; justify-content: center;
+}
+
+.auth-card{ width: 100%; max-width: 380px; padding: 26px 22px; }
+
+.auth-brand{ text-align: center; margin-bottom: 14px; }
+
+.auth-logo{
+  width: 52px; height: 52px; margin: 0 auto 8px; border-radius: 14px;
+  background: var(--accent); color: #fff; font-size: 1.6rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.auth-title{ font-size: 1.15rem; font-weight: 700; margin: 0; letter-spacing: 0.04em; }
+
+/* 4.2.0 批次 3 D-6：.auth-tabs／.auth-tab 已改用 .segmented（label＋radio），樣式刪除 */
+
+.auth-label{
+  display: block; font-size: 0.85rem; color: var(--muted); margin-bottom: 10px;
+}
+
+/* .auth-label input 的樣式已收編為 .input-shared（檔尾批次 3 區塊），此處只留 label */
+
+.auth-submit{ width: 100%; padding: 11px 0; font-size: 0.98rem; margin-top: 4px; }
+
+.auth-foot{ text-align: center; margin-top: 12px; }
+
+/* ============================================================
+   3.3.0 後台即時監控
+   ============================================================ */
+
+.live-bar{
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 8px;
+}
+
+.live-dot{
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--good); animation: livePulse 2s infinite;
+}
+
+/* ============================================================
+   3.3.0 使用者管理：層級徽章、展開詳情、分級控制鈕
+   （.ud-filter「顯示已刪除」與 .btn-lv「層級下拉」已於 4.2.0 批次 2 刪除：
+     前者改 .segmented 四篩選、後者收進「⋯」選單）
+   ============================================================ */
+
+.btn-row-toggle{
+  border: none; background: transparent; color: var(--muted);
+  cursor: pointer; padding: 2px; vertical-align: middle; line-height: 0;
+}
+
+.btn-row-toggle:hover{ color: var(--accent); }
+
+.btn-row-toggle svg{ width: 16px; height: 16px; }
+
+.ud-detail > td{ background: var(--surface-2); padding: 10px 12px; }
+
+.ud-grid{
+  display: grid; grid-template-columns: auto 1fr; gap: 4px 14px;
+  font-size: 0.88rem; margin: 0;
+}
+
+.ud-grid > span{ color: var(--muted); }
+
+.ud-grid > strong{ font-weight: 600; }
+
+.pf-block h3{ margin: 0 0 4px; font-size: 0.95rem; font-weight: 700; }
+
+.pf-danger h2{ color: var(--bad); }
+
+.pf-danger .btn{ color: var(--bad); border-color: color-mix(in srgb, var(--bad) 40%, transparent); }
+
+.pf-danger .btn:hover{ background: color-mix(in srgb, var(--bad) 12%, transparent); color: var(--bad); }
+
+/* ============================================================
+   3.3.1 註冊牆：訪客進入鎖定功能頁 → 內容模糊＋鎖卡（無法操作）
+   ============================================================ */
+
+#app{ position: relative; }
+
+/* ============================================================
+   3.3.1 後台：① 即時監控卡片頂端的 Edge Function 用量列（T-013）
+   ============================================================ */
+
+.sys-fn{
+  font-size: 0.88rem; color: var(--muted);
+  margin: 0 0 10px; padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ============================================================
+   3.3.1 後台 ⑥ 統計圖表：純 SVG 折線圖（T-014，零依賴、零動畫）
+   ============================================================ */
+
+.line-chart{ width: 100%; height: auto; display: block; margin: 4px 0 8px; }
+
+.line-chart polyline{ fill: none; stroke-width: 2.5; }
+
+.line-chart circle{ transition: r 0.12s ease; }
+
+.line-chart circle:hover{ r: 5; }
+
+.line-chart text{ font-family: inherit; }
+
+.chart-legend{ display: flex; align-items: center; gap: 14px; margin-bottom: 4px; }
+
+.chart-legend .lg{ font-size: 0.85rem; font-weight: 600; }
+
+/* ============================================================
+   3.3.1 註冊牆：主頁卡片鎖（T-016 A）＋ 練習按鈕鎖（T-016 B）
+   ============================================================ */
+
+.card-locked > *:not(.card-lock-tip){
+  filter: blur(5px); pointer-events: none; user-select: none;
+}
+
+.card-lock-tip svg{ width: 15px; height: 15px; color: var(--accent); flex: none; }
+
+.card-lock-tip a{ color: var(--accent); font-weight: 600; }
+
+/* 公告卡：喇叭改統一線條 SVG。
+   5.1.3：原本這裡的 .ann-text display:flex 與 .ann-icon 已被 3.3.0 區塊的新一組取代
+   （文字改單行省略後不再需要 display:flex 包圖示與文字，圖示已另起一個 span），
+   留著會用同特異度覆蓋掉 nowrap／ellipsis，故整對刪除。 */
+
+/* 排程管理刪除鈕：垃圾桶線條 SVG */
+
+.sched-row .btn svg{ width: 15px; height: 15px; }
+
+.pw-form label{ display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 0.92rem; }
+
+.pw-form input{ flex: 1; max-width: 260px; }
+
+/* ============================================================
+   4.0.2 後台完善
+   ============================================================ */
+
+/* 使用者管理：在線狀態點點（閃爍＝持續活躍） */
+
+.status-dot{
+  display: inline-block;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+  background: var(--muted);
+}
+
+.status-dot.st-online{ background: var(--good); }
+
+.status-dot.st-active{ background: var(--good); animation: dot-pulse 1.2s ease-in-out infinite; }
+
+.status-dot.st-warn{ background: var(--warn); }
+
+.status-dot.st-off{ background: var(--muted); opacity: 0.55; }
+
+.ud-legend{
+  display: flex; flex-wrap: wrap; gap: 12px;
+  margin: 6px 0 2px;
+  font-size: 0.78rem; color: var(--muted);
+}
+
+/* 即時監控：平台額度列 */
+
+.quota-rows{ display: flex; flex-direction: column; gap: 6px; margin-top: 6px; }
+
+.q-row{
+  display: grid;
+  grid-template-columns: 110px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.q-row .stat-bar{ display: block; width: 100%; }
+
+.q-val{ color: var(--muted); font-size: 0.78rem; white-space: nowrap; }
+
+/* 後台單詞本：分組標籤（後台列表＋使用者端分組標題共用） */
+
+.grp-tag{
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 8px;
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  font-size: 0.72rem;
+  color: var(--muted);
+  vertical-align: middle;
+}
+
+/* ---------- 4.0.4 ---------- */
+
+/* 賬戶/統計橫屏方格：收斂過寬的欄，卡片更緊湊 */
+
+@media (min-width: 900px){/* 詞形變化四欄同行 */
+
+.tense-table table{ display: block; width: 100%; }
+
+.tense-table th{ display: block; text-align: left; color: var(--muted); font-size: 0.75rem; font-weight: 600; }
+
+.tense-table td{ display: block; text-align: left; font-weight: 600; }}
+
+.bulk-move input[type="date"]{ flex: none; }
+
+#feedback-fab svg{ width: 19px; height: 19px; }
+
+#feedback-panel textarea{ width: 100%; border: 1px solid var(--border); border-radius: 8px; padding: 8px; background: var(--surface-2); color: var(--ink); font-family: inherit; resize: vertical; }
+
+.fb-q{ font-size: 0.88rem; line-height: 1.5; }
+
+.fb-a{ font-size: 0.85rem; margin-top: 4px; padding: 6px 8px; background: var(--accent-soft); border-radius: 8px; }
+
+.fb-reply-row{ display: flex; gap: 6px; margin-top: 6px; }
+
+.fb-reply-row input{ flex: 1; border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; background: var(--surface-2); color: var(--ink); font-family: inherit; }
+
+/* 查詢：標記按鈕靠右已於 4.2.0 批次 3 收編為 .word-actions（檔尾批次 3 區塊） */
+
+/* ============================================================
+   4.1.1 Design System — Soft Minimal × Material 3
+   分層：Tokens → Typography → Components → Practice
+   ============================================================ */
+
+/* ---------- Typography Scale（學習內容層級：EN 字 → 中文 → 例句 → 支援資訊） ---------- */
+
+.tp-page-title{ font-size: 1.15rem; font-weight: 700; letter-spacing: 0.02em; margin: 0 0 10px; }
+
+.tp-secondary{ font-size: 0.85rem; color: var(--muted); }
+
+.tp-caption{ font-size: 0.76rem; color: var(--muted); letter-spacing: 0.02em; }
+
+/* ---------- Semantic tokens（success/error；深淺色各自定義） ---------- */
+
+/* 4.1.1 修復（QA 實證）：須用 :root（與上方既有 token 同特異度、較晚出現者勝）——
+   原用 html 選擇器特異度低於 :root，淺色模式新色全被蓋回舊值 */
+
+:root{ --ok: #3F7D5C; --ok-soft: rgba(63, 125, 92, 0.12); --bad: #B4552D; --bad-soft: rgba(180, 85, 45, 0.1); }
+
+html.dark{ --ok: #7BB89A; --ok-soft: rgba(123, 184, 154, 0.14); --bad: #D9825F; --bad-soft: rgba(217, 130, 95, 0.13); }
+
+/* ---------- Focus ring（全站鍵盤焦點慣例） ---------- */
+
+:focus-visible{ outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+.btn:focus-visible{ outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---------- Motion tokens ---------- */
+
+html{ --motion-fast: 150ms; --motion-base: 200ms; --motion-slow: 250ms; --ease: cubic-bezier(0.2, 0, 0, 1); }
+
+/* ---------- Button 3-level（primary＝.btn.primary；secondary＝.btn；tertiary＝.btn-text） ---------- */
+
+.btn-text{
+  background: transparent; border: none; color: var(--accent);
+  padding: 6px 10px; cursor: pointer; font-size: 0.88rem; font-weight: 600;
+  border-radius: 8px; transition: background var(--motion-fast) var(--ease);
+  font-family: inherit;
+}
+
+.btn-text:hover{ background: var(--accent-soft); }
+
+.btn-text:disabled{ opacity: 0.45; cursor: default; }
+
+.btn.danger{ color: var(--bad); border-color: color-mix(in srgb, var(--bad) 40%, transparent); }
+
+.btn.danger:hover{ background: var(--bad-soft); }
+
+/* ---------- Icon-only button ---------- */
+
+.icon-btn{
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px; border-radius: 10px; flex: none;
+  border: 1px solid var(--border); background: var(--surface);
+  color: var(--ink); cursor: pointer; transition: background var(--motion-fast) var(--ease);
+}
+
+.icon-btn:hover{ background: var(--surface-2); }
+
+.icon-btn svg{ width: 18px; height: 18px; }
+
+.card-h2-icon svg{ width: 17px; height: 17px; margin-right: 6px; color: var(--muted); }
+
+.wb-toolbar .btn svg{ width: 15px; height: 15px; vertical-align: -3px; }
+
+.cw-meaning .btn-text svg{ width: 13px; height: 13px; vertical-align: -2px; }
+
+.q-nav-btn svg{ width: 15px; height: 15px; vertical-align: -3px; }
+
+.cal-nav svg{ width: 16px; height: 16px; }
+
+.seg-row{ display: flex; flex-direction: column; gap: 4px; }
+
+.seg-label{ font-size: 0.82rem; color: var(--muted); }
+
+/* ---------- 行內小圖標（4.2.0：純文字段落內的 ICONS 內聯 svg，emoji 禁令的收尾） ---------- */
+
+.ic-inline{ vertical-align: -2px; flex: none; }
+
+svg.ic-inline + span{ margin-left: 4px; }
+
+/* 一般按鈕內的 chevron／圖標（返回、上一個、下一題…） */
+
+.btn > svg{ width: 15px; height: 15px; vertical-align: -3px; }
+
+.stars svg{ flex: none; }
+
+/* 圖表圖例的色點（取代 ● 文字符號） */
+
+.lg-dot{ display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: currentColor; margin-right: 5px; vertical-align: -1px; }
+
+/* ---------- Toast（一般＝目前 Accent；semantic 才用 semantic 色） ---------- */
+
+#toast-region{ position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); z-index: 200; display: flex; flex-direction: column; gap: 8px; align-items: center; pointer-events: none; }
+
+.toast{
+  background: var(--surface); color: var(--ink);
+  border: 1px solid var(--border); border-left: 3px solid var(--accent);
+  border-radius: 10px; padding: 9px 16px; font-size: 0.88rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  animation: toast-in var(--motion-base) var(--ease);
+  max-width: min(480px, calc(100vw - 32px));
+}
+
+.toast.toast-ok{ border-left-color: var(--ok); }
+
+.toast.toast-bad{ border-left-color: var(--bad); }
+
+/* ---------- Dialog（M3 結構＋Soft Minimal 視覺） ---------- */
+
+.dlg-overlay{ position: fixed; inset: 0; z-index: 150; background: rgba(0, 0, 0, 0.35); display: flex; align-items: center; justify-content: center; padding: 16px; }
+
+.dlg{
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+  width: min(440px, 100%); padding: 18px; animation: toast-in var(--motion-base) var(--ease);
+}
+
+.dlg-title{ font-size: 1rem; font-weight: 700; margin: 0 0 8px; }
+
+.dlg-body{ font-size: 0.9rem; line-height: 1.6; color: var(--ink); }
+
+.dlg-body.dlg-danger{ color: var(--bad); }
+
+.dlg-actions{ display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
+
+/* ---------- Empty state（SVG icon＋說明＋可選動作） ---------- */
+
+.empty-state{ text-align: center; padding: 26px 14px; color: var(--muted); }
+
+.empty-state svg{ width: 34px; height: 34px; opacity: 0.5; }
+
+.empty-state .es-title{ font-weight: 600; color: var(--ink); margin: 8px 0 4px; font-size: 0.95rem; }
+
+.empty-state .es-desc{ font-size: 0.85rem; }
+
+.empty-state .btn{ margin-top: 10px; }
+
+/* ---------- Segmented control（radio 語意；:has 選中底色） ---------- */
+
+.segmented{ display: inline-flex; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+
+.segmented label{ padding: 7px 14px; font-size: 0.85rem; cursor: pointer; border-right: 1px solid var(--border); background: var(--surface); transition: background var(--motion-fast) var(--ease); }
+
+.segmented label:last-child{ border-right: none; }
+
+.segmented label:hover{ border-color: var(--accent); }
+
+/* 4.1.1：.segmented 可能被放進 .import-row，該處的 .import-row label 會帶 column flex 樣式；
+   此處明確收回 display，避免標籤排版受外層污染（兩者特異度相同，靠順序無法保證） */
+
+.import-row .segmented label{ display: block; }
+
+.segmented input{ position: absolute; opacity: 0; pointer-events: none; }
+
+.segmented label:has(input:checked){ background: var(--accent-soft); }
+
+.segmented label:has(input:checked) span{ font-weight: 700; }
+
+.pt-section .tp-section-title svg{ width: 18px; height: 18px; color: var(--accent); }
+
+.pt-card .pt-icon svg{ width: 19px; height: 19px; color: var(--accent); }
+
+/* ============================================================
+   4.2.0 inline style 收編
+   把 js/ 模板字串裡的 style="..." 靜態設計值搬進來；class 命名對應語意。
+   仍留在行內的只有「真正隨資料變動的值」：長條寬度（width:%）、
+   強調色底色（theme-dot 的 background）、依單字長度算出的輸入框寬度。
+   ============================================================ */
+
+/* 按鈕列：靠左／靠右排列（原本 12 處 controls + justify-content） */
+
+.controls.controls-start{ justify-content: flex-start; }
+
+.controls.controls-end{ justify-content: flex-end; }
+
+/* 段落間距：區塊下的小字提示（原本 margin-top:6px／margin:8px 0 0 等） */
+
+.note-tight{ margin-top: 6px; }
+
+.note-head{ margin-top: 10px; }
+
+.section-title-lg{ margin-top: 16px; }
+
+/* 郵箱驗證碼輸入 */
+
+.input-key-code{ letter-spacing: 1px; }
+
+/* 後台金鑰代碼顯示 */
+
+/* 後台手動輸入金鑰：掛 .search-row 取得 .search-row input 的既有外觀
+   （邊框／圓角／字體／focus 環／flex:1），這裡只固定容器寬度並取消上下 margin */
+
+.search-row-compact{ width: 230px; margin: 0; }
+
+/* 模型列與上一列的間距 */
+
+/* 顏色與語意 */
+
+.text-good{ color: var(--good); }
+
+/* 圖表圖例：色值搬進 CSS（原本寫死 style="color:var(--accent)"） */
+
+.chart-legend .lg-accent{ color: var(--accent); }
+
+.chart-legend .lg-warn{ color: var(--warn); }
+
+/* 表單列中的按鈕：貼齊輸入框底緣（.import-row 是 column 排列，鈕不會自動對齊） */
+
+.align-end{ align-self: flex-end; }
+
+/* ============================================================
+   4.2.0 批次 2
+   A 節：後台 admin workspace 化（js/pages/admin.js）
+   ============================================================ */
+
+/* ---------- A-1：後台 workspace 版面（左欄 176px 分區導航＋右欄單區） ---------- */
+
+.admin-shell{
+  display: grid;
+  grid-template-columns: 176px minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.admin-nav{
+  display: flex; flex-direction: column; gap: var(--space-1);
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-2) var(--space-1);
+  position: sticky; top: var(--space-2);
+}
+
+.admin-nav-item{
+  display: flex; align-items: center; gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  color: var(--ink); text-decoration: none;
+  border-radius: var(--shape-sm);
+  transition: background var(--motion-fast) var(--ease);
+}
+
+.admin-nav-item:hover{ background: var(--surface-3); }
+
+.admin-nav-item.active{
+  background: var(--surface);
+  box-shadow: inset 3px 0 0 var(--accent);
+  font-weight: 600;
+}
+
+.admin-nav-icon{ display: inline-flex; align-items: center; flex: none; color: var(--muted); }
+
+.admin-nav-icon svg{ width: 16px; height: 16px; }
+
+.admin-nav-item.active .admin-nav-icon{ color: var(--accent); }
+
+.admin-nav-label{ font-size: 0.88rem; }
+
+/* 手機：左欄改為頂部橫向捲動列（176px 欄在 640px 版心下會擠掉右欄） */
+
+@media (max-width: 560px){.admin-shell{ grid-template-columns: minmax(0, 1fr); }
+
+.admin-nav{ flex-direction: row; overflow-x: auto; position: static; }
+
+.admin-nav-item{ white-space: nowrap; }
+
+.admin-nav-item.active{ box-shadow: inset 0 -3px 0 var(--accent); }}
+
+/* 頂部工具列：即時監控狀態＋刷新／登出 */
+
+.admin-bar{
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--space-2); flex-wrap: wrap;
+  margin-bottom: var(--space-2);
+}
+
+.admin-live{ margin-bottom: 0; }
+
+.admin-bar-actions{ display: inline-flex; align-items: center; gap: var(--space-1); }
+
+.admin-panel-card{ padding-top: var(--space-4); }
+
+.admin-desc{ margin: 0 0 var(--space-1); }
+
+.admin-meta{ margin: 0 0 var(--space-4); }
+
+/* 小尺寸 icon-btn（後台刷新鈕／使用者列的「⋯」） */
+
+.icon-btn-sm{ width: 32px; height: 32px; border-radius: var(--shape-sm); border-color: transparent; background: transparent; color: var(--muted); }
+
+.icon-btn-sm:hover{ background: var(--surface-2); color: var(--ink); }
+
+.icon-btn-sm svg{ width: 16px; height: 16px; }
+
+/* ---------- A-2/A-3：使用者表格（操作型密度） ---------- */
+
+.ud-table th{
+  padding: var(--space-2) 10px;
+  background: var(--surface-2);
+  color: var(--muted); font-weight: 600; font-size: 0.76rem;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.ud-table td{
+  padding: 6px 10px;
+  height: 32px;
+  border-bottom: 1px solid var(--border-soft);
+  white-space: nowrap;
+}
+
+.ud-table tr:hover td{ background: var(--surface-2); }
+
+/* 狀態點欄固定 28px：Email 欄拆兩欄後，點不會跟著 email 長度擠動 */
+
+.ud-table .td-dot{ width: 28px; min-width: 28px; padding-left: 10px; padding-right: 0; }
+
+.ud-table .td-dot .status-dot{ margin-right: 0; }
+
+.ud-table .td-word{ white-space: normal; min-width: 90px; }
+
+.ud-table .td-ops{ width: 40px; text-align: right; }
+
+.ud-count{ margin: 0 0 var(--space-2); }
+
+.ud-search{ margin: var(--space-2) 0; }
+
+.ud-search input{ width: 100%; }
+
+.ud-seg{ margin: var(--space-2) 0 var(--space-3); gap: var(--space-1); }
+
+/* 「⋯」帳號操作選單：複用 .user-menu 樣式，定位值由 admin.js 依按鈕位置行內寫入 */
+
+/* 帳號選單使用 getBoundingClientRect 的視窗座標，須 fixed；清除共用 right，避免捲動錯位與拉寬。 */
+
+.ud-menu{ position: fixed; right: auto; min-width: 190px; z-index: 160; }
+
+.ud-menu button{ padding: var(--space-2) var(--space-3); font-size: 0.88rem; }
+
+.ud-menu button:disabled{ opacity: 0.45; cursor: default; }
+
+.ud-menu button:disabled:hover{ background: var(--surface); color: var(--ink); }
+
+.ud-menu button.is-current{ color: var(--muted); }
+
+.ud-menu button.is-current::after{ content: '（目前）'; font-size: 0.76rem; color: var(--muted); }
+
+.ud-menu button.is-danger{ color: var(--bad); }
+
+.ud-menu button.is-danger:hover{ background: var(--bad-soft); color: var(--bad); }
+
+/* ---------- A-7：七區列表列統一 .list-row ---------- */
+
+/* 取代 .preset-item／後台 .fb-item：金鑰／公告／預設單詞本／反饋共用同一列樣式 */
+
+.list-row{
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--space-2); padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--border-soft);
+  transition: background var(--motion-fast) var(--ease);
+}
+
+.list-row:hover{ background: var(--surface-2); }
+
+.list-row:last-child{ border-bottom: none; }
+
+.list-row.split > span{ display: inline-flex; align-items: center; gap: var(--space-1); flex: none; }
+
+/* 反饋工單在後台：內容可換行，列高不鎖 32px（.list-row 只給間距與線） */
+
+.list-row.fb-admin{ align-items: flex-start; flex-direction: column; gap: var(--space-2); }
+
+/* ---------- openDialog 輸入模式（取代原生 prompt） ---------- */
+
+.dlg-input{
+  width: 100%; margin-top: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border); border-radius: var(--shape-sm);
+  background: var(--surface); color: var(--ink);
+  font-size: 0.95rem; font-family: inherit;
+}
+
+.dlg-input:focus{ outline: none; border-color: var(--accent); }
+
+.pt-card--feature .pt-icon svg{ width: 21px; height: 21px; }
+
+/* danger 對話框裡的碼沿用 --bad 語意色，與 .dlg-body.dlg-danger 的警示色一致 */
+
+.dlg-body.dlg-danger .dlg-code{ color: var(--bad); border-color: color-mix(in srgb, var(--bad) 30%, transparent); }
+
+/* ---------- D-5 設置頁 ---------- */
+
+/* 7 組短選項改 .segmented：滿寬平分、上下留白固定，避免每組高度不一 */
+
+.card .segmented{ display: flex; width: 100%; margin: var(--space-2) 0 var(--space-4); }
+
+.card .segmented label{ flex: 1 1 0; min-width: 0; text-align: center; }
+
+/* 選項文字較長的（單字卡字體、模型）允許縮排換行 */
+
+.card .segmented label span{ display: block; }
+
+/* 4.2.0 批次 3 D-5：.seg-row 內的 .segmented（配對題型、後台使用者篩選）沿用既有 inline 寬度，
+   不吃 .card .segmented 的滿寬規則——該規則特異度較高，需明確收回 */
+
+.card .seg-row .segmented{ display: inline-flex; width: auto; margin: 0; }
+
+.card .seg-row .segmented label{ flex: none; }
+
+/* ---------- D-6 auth ---------- */
+
+/* 分頁用 .segmented：整寬、兩等分（.auth-tabs／.auth-tab 已於 4.2.0 批次 3 移除） */
+
+.auth-seg{ display: flex; width: 100%; margin-bottom: var(--space-4); }
+
+.auth-seg label{ flex: 1 1 0; text-align: center; }
+
+/* 表單輸入共用 .search-row input 的樣式（4.2.0 批次 3：auth-label input 收編） */
+
+.input-shared{
+  display: block; width: 100%; margin-top: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border); border-radius: var(--shape-sm);
+  background: var(--surface); color: var(--ink);
+  font-size: 0.95rem; font-family: inherit;
+}
+
+.input-shared:focus{ outline: none; border-color: var(--accent); }
+
+.bank-item:has(input:checked){ border-color: var(--accent); background: var(--accent-soft); }
+
+.bank-item input{ accent-color: var(--accent); }
+
+.settings-row-title .tp-caption{ margin: 2px 0 0; }
+
+.settings-switch input{ accent-color: var(--accent); }
+
+.mc-actions .btn-text{ font-size: 0.8rem; }
+
+.mc-actions .btn-text svg{ width: 13px; height: 13px; vertical-align: -2px; }
+
+.join-words .chip-flag svg{ width: 12px; height: 12px; }
+
+.join-merge-item input{ accent-color: var(--accent); }
+
+.note-tense strong{ color: var(--accent); }
+
+.tr-box .num{ font-size: 1.5rem; font-weight: 700; }
+
+/* ============================================================
+   5.0.4 A／F 項樣式補充
+   ============================================================ */
+
+/* F：後台分區標題列的圖標（重用左欄 .admin-nav-icon 的尺寸與色彩語彙） */
+
+.admin-title-icon{ display: inline-flex; align-items: center; color: var(--accent); margin-right: 6px; vertical-align: -3px; }
+
+.admin-title-icon svg{ width: 19px; height: 19px; }
+
+/* F：主要動作鈕的行內圖標（iconInline 給的是 .ic-inline；此處只調對齊與色彩） */
+
+.btn .ic-inline, .btn-text .ic-inline{ vertical-align: -2px; margin-right: 4px; color: currentColor; }
+
+.import-row .btn .ic-inline{ margin-right: 4px; }
+
+.ob-art svg{ width: 132px; height: 92px; }
+
+/* --- d1：對勾描繪（stroke-dashoffset 漸變到 0：只動描邊偏移，不觸發重排，紅線允許）。
+   svg 字串由 core/ui.js 的 ICONS.tick 提供（自帶 d1-tick class），插入即描繪。 --- */
+
+.d1-tick path{ stroke-dasharray: 24; stroke-dashoffset: 24; animation: d1-draw 320ms ease-out forwards; }
+
+.d1-mark svg{ width: 1.15em; height: 1.15em; }
+
+.resume .resume-play svg{ width: 18px; height: 18px; }
+
+/* 5.1.8（用戶指示「不用加 start」）：原本這裡有 .node.cur .nt::after 產生 START 徽章，
+   整條規則刪除，不留空殼。目前的任務改由「藍底藍框的方塊」與 accent 色的標題表達，
+   三個格子都是可點的 <a>，點哪一格就跳哪個功能頁，不需要再靠一顆徽章說明從哪裡開始。
+   .path-done（「今日任務完成」）維持原樣：它是三個都做完之後才出現的訊息，
+   與 START 徽章是兩件事，不在這次指示的範圍內。 */
+
+a.node:hover .nt{ color: var(--accent); }
+
+.motiv .num{ font-size: 1.5rem; font-weight: 800; color: var(--accent); line-height: 1.25; }
+
+.motiv-ic svg{ width: 16px; height: 16px; display: block; margin: 0 auto 2px; }
+
+.daily-recheck h3{ margin: 0 0 4px; }
+
+.settings-group > h3:first-child{ margin-top: 0; }
+
+.ld-group > h3:first-child{ margin-top: 0; }
+
+.review-main-card .task-head h2{ margin: 0; }
+
+/* 複習評分：桌機維持原 flex；窄版固定 2／3 等寬鍵，翻面前 hidden 仍由原流程控制 */
+
+.grade-controls .btn{ flex: 1 1 0; }
+
+@media (max-width: 640px){#grade-controls .btn{ min-width: 0; width: 100%; padding-left: 6px; padding-right: 6px; }
+
+.study-settings-card .settings-row-main .segmented{ width: 100%; }
+
+.study-settings-card .settings-row-main .segmented label{ flex: 1 1 0; text-align: center; }
+
+.study-settings-card .controls .btn{ width: 100%; }
+
+.study-settings-card .count-row input[type="number"]{ flex: 0 0 88px; }
+
+.study-settings-card .count-row input[type="range"]{ flex: 1 1 150px; }
+
+.diagnostic-loads .btn{ flex: 1 1 100%; text-align: left; }
+
+.diagnostic-task-grid article .btn{ width: 100%; margin-top: var(--space-2); }
+
+.mgmt-row input[type="date"]{ flex: 1 1 140px; min-width: 0; }
+
+.bulk-move input[type="date"]{ flex: 1 1 150px; }}
+
+/* ---------- keyframes（被保留規則引用者） ---------- */
+@keyframes pageSlideFwd{
+  from { opacity: 0; transform: translateX(26px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes pageSlideBack{
+  from { opacity: 0; transform: translateX(-26px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes pageFadeUp{
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes pageSpring{
+  from { opacity: 0; transform: scale(.94) translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes livePulse{ 50% { opacity: .4 } }
+
+@keyframes dot-pulse{ 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+@keyframes toast-in{ from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+@keyframes d1-draw{ to { stroke-dashoffset: 0; } }

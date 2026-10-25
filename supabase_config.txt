@@ -1,0 +1,19 @@
+# ============================================================
+# 學測英文單字後台：Supabase 公開設定（部署時填寫）
+#
+# 只需要「專案網址」與「匿名公開金鑰（anon public key）」兩行，這兩個值本來就會
+# 送到瀏覽器，屬公開設定；所有授權仍由資料庫 RLS 與 security definer RPC 負責。
+#
+# 絕對不要填 service_role／secret key：
+#   本站會拒絕 service_role 與新式秘密金鑰；填好後仍須先執行上傳前設定檢查。
+#
+# 取得方式：專案 Connect 視窗，或 Settings 的 API Keys 頁面
+#   1. Project URL      例如：https://<project-ref>.supabase.co
+#   2. anon public key  （或新式 sb_publishable_... 金鑰）
+#
+# 填好後把檔名保持為 supabase_config.txt，放在站點根目錄（與 index.html 同層），
+# 重新整理即可。未填寫時後台會顯示「尚未設定 Supabase」而不會嘗試連線。
+# ============================================================
+
+# Project URL=https://ylpjtgorihamrdupjhqc.supabase.co
+# anon key=sb_publishable_OqRxC5uuqK-W1QONVznJgg_pisEt0T9
